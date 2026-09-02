@@ -25,9 +25,9 @@ export default function Registration({ allGadgets, setAllGadgets }) {
   const [gadgetName, setGadgetName] = useState("");
   const [category, setCategory] = useState("");
   const [manufacturer, setManufacturer] = useState("");
-  const [healthRating, setHealthRating] = useState();
+  const [healthRating, setHealthRating] = useState("");
   const [techBrand, setTechBrand] = useState("");
-  const [userRole, setUserRole] = useState("engineer");
+  const [userRole, setUserRole] = useState("Engineer");
 
   function validation() {
     let newError = {
@@ -162,11 +162,11 @@ export default function Registration({ allGadgets, setAllGadgets }) {
         >
           <FormLabel>Select User Role</FormLabel>
           <FormControlLabel
-            value="engineer"
+            value="Engineer"
             control={<Radio />}
             label="Engineer"
           />
-          <FormControlLabel value="tester" control={<Radio />} label="Tester" />
+          <FormControlLabel value="Tester" control={<Radio />} label="Tester" />
         </RadioGroup>
 
         <Button

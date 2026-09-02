@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "../App.css";
 
-function Navbar() {
+function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 

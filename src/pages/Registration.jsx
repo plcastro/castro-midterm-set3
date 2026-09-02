@@ -1,4 +1,6 @@
 import { useState } from "react";
+import "../App.css";
+import { useNavigate } from "react-router-dom";
 import {
   Card,
   TextField,
@@ -10,8 +12,8 @@ import {
   Radio,
   Typography,
 } from "@mui/material";
-import "../App.css";
-export default function Registration() {
+export default function Registration({ allGadgets, setAllGadgets }) {
+  const navigate = useNavigate();
   const [error, setError] = useState({
     gadgetName: "",
     category: "",
@@ -25,7 +27,7 @@ export default function Registration() {
   const [manufacturer, setManufacturer] = useState("");
   const [healthRating, setHealthRating] = useState();
   const [techBrand, setTechBrand] = useState("");
-  const [userRole, setUserRole] = useState("Engineer");
+  const [userRole, setUserRole] = useState("engineer");
 
   function validation() {
     let newError = {
@@ -62,23 +64,42 @@ export default function Registration() {
     }
 
     setError(newError);
-
-    return (
+    const isValid =
       !newError.gadgetName &&
       !newError.category &&
       !newError.manufacturer &&
       !newError.healthRating &&
       !newError.techBrand &&
-      !newError.userRole
-    );
+      !newError.userRole;
+
+    if (isValid) {
+      const newGadget = {
+        gadgetName,
+        category,
+        manufacturer,
+        healthRating,
+        techBrand,
+        userRole,
+      };
+
+      setAllGadgets((prev) => [...prev, newGadget]);
+
+      navigate("/view-table");
+    }
   }
 
   return (
     <Card
       variant="outlined"
-      className="flex flex-col justify-between w-full p-4 sm:p-5 gap-2 bg-gray-800 rounded-lg border-t-4 border-teal-500 shadow-md shadow-gray-150"
+      className="flex flex-col justify-between w-full sm:w-2xl p-4 sm:p-5 gap-2 bg-gray-800 rounded-lg border-t-4 border-teal-500 shadow-md shadow-gray-150"
     >
-      <Typography variant="h3">Register a Gadget</Typography>
+      <Typography
+        variant="h4"
+        align="center"
+        className="!font-black !tracking-wide"
+      >
+        Register a Gadget
+      </Typography>
       <FormControl className="flex flex-col gap-4">
         <TextField
           variant="outlined"
@@ -153,6 +174,7 @@ export default function Registration() {
           variant="contained"
           size="large"
           onClick={validation}
+          className="!bg-teal-600"
         >
           Submit
         </Button>

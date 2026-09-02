@@ -17,14 +17,26 @@ function Navbar() {
         <ul className="hidden items-center gap-4 md:flex border-gray-700 text-xs font-bold border rounded-lg p-2 ">
           <li>
             <Link
-              to="/registration"
+              to="/"
               className={`block whitespace-nowrap rounded-md px-2 py-2 transition hover:bg-gray-800 hover:text-teal-400 lg:px-4  ${
                 location.pathname === "/"
                   ? "bg-teal-500 text-gray-900"
                   : "text-slate-400"
               }`}
             >
-              Registration
+              Register Gadget
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/view-table"
+              className={`block whitespace-nowrap rounded-md px-2 py-2 transition hover:bg-gray-800 hover:text-teal-400 lg:px-4  ${
+                location.pathname === "/view-table"
+                  ? "bg-teal-500 text-gray-900"
+                  : "text-slate-400"
+              }`}
+            >
+              View Gadgets
             </Link>
           </li>
         </ul>
@@ -53,7 +65,7 @@ function Navbar() {
         <ul className="mx-auto grid max-w-6xl gap-2 px-6 pb-4 md:hidden">
           <li>
             <Link
-              to="/registration"
+              to="/"
               className={`block whitespace-nowrap rounded-md px-2 py-2 transition hover:bg-gray-800 hover:text-teal-400 lg:px-4  ${
                 location.pathname === "/"
                   ? "bg-teal-500 text-gray-900"
@@ -62,6 +74,19 @@ function Navbar() {
               onClick={() => setIsOpen(false)}
             >
               Registration
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/view-table"
+              className={`block whitespace-nowrap rounded-md px-2 py-2 transition hover:bg-gray-800 hover:text-teal-400 lg:px-4  ${
+                location.pathname === "/view-table"
+                  ? "bg-teal-500 text-gray-900"
+                  : "text-slate-400"
+              }`}
+              onClick={() => setIsOpen(false)}
+            >
+              View Gadgets
             </Link>
           </li>
         </ul>

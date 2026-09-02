@@ -22,7 +22,7 @@ function ProfileCard({ gadgetDetails }) {
   };
 
   return (
-    <Card className="border-t-4 border-teal-600 p-4  max-w-4xl">
+    <Card className="border-t-4 border-teal-600 p-4  max-w-6xl">
       <p>Gadget Name:</p>
       <Typography variant="h6" className="!font-black">
         {gadgetName}

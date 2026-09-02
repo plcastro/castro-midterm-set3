@@ -1,17 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   tableFeatures,
   useTable,
   rowPaginationFeature,
   createPaginatedRowModel,
+  rowSelectionFeature,
 } from "@tanstack/react-table";
-import { Button, Typography } from "@mui/material";
-
+import { Button, Typography, Card } from "@mui/material";
+import ProfileCard from "../components/ProfileCard";
 export default function ViewGadgetTable({ allGadgets }) {
   console.log(allGadgets);
   const features = tableFeatures({
     rowPaginationFeature,
     paginatedRowModel: createPaginatedRowModel(),
+    rowSelectionFeature,
   });
 
   const columns = [
@@ -26,6 +28,7 @@ export default function ViewGadgetTable({ allGadgets }) {
     features,
     columns,
     data: allGadgets,
+    enableMultiRowSelection: false,
     initialState: {
       pagination: {
         pageIndex: 0,
@@ -33,43 +36,67 @@ export default function ViewGadgetTable({ allGadgets }) {
       },
     },
   });
+
+  const [selectedGadget, setSelectedGadget] = useState(null);
+
+  useEffect(() => {
+    const selectedRows = table.getSelectedRowModel().rows;
+
+    if (selectedRows.length > 0) {
+      setSelectedGadget(selectedRows[0].original);
+    } else {
+      setSelectedGadget(null);
+    }
+  }, [table.getSelectedRowModel().rows]);
+
   return (
     <div className="w-full">
       <Typography
         variant="h4"
+        align="center"
         className="!font-black !tracking-wide !uppercase"
       >
-        Gadget Inventory
+        Tech Gadget Inventory Hub
       </Typography>
-      <table className="w-full mt-5">
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id} className="border p-3 text-left">
-                  {header.column.columnDef.header}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getAllCells().map((cell) => (
-                <td key={cell.id} className="border p-3">
-                  {cell.getValue()}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Card className="w-full mt-5 p-2">
+        <table>
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th key={header.id} className="border p-3 ">
+                    {header.column.columnDef.header}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr
+                key={row.id}
+                onClick={(e) => {
+                  row.getToggleSelectedHandler()(e);
+                  setSelectedRow(row.id);
+                }}
+                className={row.getIsSelected() ? "bg-gray-300" : ""}
+              >
+                {row.getAllCells().map((cell) => (
+                  <td key={cell.id} className="border p-3 text-sm">
+                    {cell.getValue()}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Card>
+
       <div className="flex justify-end gap-2 items-center mt-2">
         <Button
           variant="contained"
           onClick={() => table.previousPage()}
-          disable={!table.getCanPreviousPage()}
+          disabled={!table.getCanPreviousPage()}
           className="border px-4 py-2 rounded"
         >
           Previous
@@ -80,12 +107,17 @@ export default function ViewGadgetTable({ allGadgets }) {
         <Button
           variant="contained"
           onClick={() => table.nextPage()}
-          disable={!table.getCanNextPage()}
+          disabled={!table.getCanNextPage()}
           className="border px-4 py-2 rounded"
         >
           Next
         </Button>
       </div>
+      {selectedGadget && (
+        <div className="w-full mt-5">
+          <ProfileCard gadgetDetails={selectedGadget} />
+        </div>
+      )}
     </div>
   );
 }

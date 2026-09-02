@@ -96,7 +96,7 @@ export default function Registration({ allGadgets, setAllGadgets }) {
       <Typography
         variant="h4"
         align="center"
-        className="!font-black !tracking-wide"
+        className="!font-black !tracking-wide uppercase"
       >
         Register a Gadget
       </Typography>
@@ -106,6 +106,7 @@ export default function Registration({ allGadgets, setAllGadgets }) {
           label="Gadget Name"
           type="text"
           required
+          placeholder="e.g. Iphone 11, Samsung Galaxy J7"
           value={gadgetName}
           slotProps={{ htmlInput: { minLength: 3 } }}
           onChange={(e) => setGadgetName(e.target.value)}
@@ -128,6 +129,7 @@ export default function Registration({ allGadgets, setAllGadgets }) {
           label="Manufacturer"
           type="text"
           value={manufacturer}
+          placeholder="e.g. Apple, Samsung"
           required
           onChange={(e) => setManufacturer(e.target.value)}
           error={!!error.manufacturer}
@@ -138,6 +140,7 @@ export default function Registration({ allGadgets, setAllGadgets }) {
           label="Health Rating"
           type="number"
           value={healthRating}
+          placeholder="1-100"
           required
           slotProps={{ htmlInput: { min: 1, max: 100 } }}
           onChange={(e) => setHealthRating(e.target.value)}

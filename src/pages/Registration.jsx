@@ -91,7 +91,7 @@ export default function Registration({ allGadgets, setAllGadgets }) {
   return (
     <Card
       variant="outlined"
-      className="flex flex-col justify-between w-full sm:w-2xl p-4 sm:p-5 gap-2 bg-gray-800 rounded-lg border-t-4 border-teal-500 shadow-md shadow-gray-150"
+      className="flex flex-col justify-between w-full mx-auto sm:w-2xl p-4 sm:p-5 gap-2 bg-gray-800 rounded-lg border-t-4 border-teal-500 shadow-md shadow-gray-150"
     >
       <Typography
         variant="h4"

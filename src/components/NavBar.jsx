@@ -73,7 +73,7 @@ function Navbar() {
               }`}
               onClick={() => setIsOpen(false)}
             >
-              Registration
+              Register Gadget
             </Link>
           </li>
           <li>

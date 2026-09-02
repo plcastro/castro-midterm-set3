@@ -11,7 +11,7 @@ export const data = [
     gadgetName: "ThinkPad X1 Carbon",
     category: "Laptop",
     manufacturer: "Lenovo",
-    healthRating: 88,
+    healthRating: 40,
     techBrand: "Intel",
     userRole: "Engineer",
   },

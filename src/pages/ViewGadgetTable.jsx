@@ -50,7 +50,7 @@ export default function ViewGadgetTable({ allGadgets }) {
   }, [table.getSelectedRowModel().rows]);
 
   return (
-    <div>
+    <div className="">
       <Typography
         variant="h4"
         align="center"
@@ -61,7 +61,7 @@ export default function ViewGadgetTable({ allGadgets }) {
 
       <Card className="w-full">
         <div className="w-full overflow-x-auto">
-          <table className="min-w-4xl rounded">
+          <table className="min-w-full rounded">
             <thead className="bg-teal-600 text-white">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
@@ -95,7 +95,7 @@ export default function ViewGadgetTable({ allGadgets }) {
         </div>
       </Card>
 
-      <div className="flex justify-end gap-2 items-center mt-2">
+      <div className="flex sm:justify-end  justify-center gap-2 items-center mt-2">
         <Button
           variant="contained"
           onClick={() => table.previousPage()}

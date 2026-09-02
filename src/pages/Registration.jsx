@@ -13,12 +13,12 @@ import {
 import "../App.css";
 export default function Registration() {
   const [error, setError] = useState({
-    gnError: "",
-    catError: "",
-    manuError: "",
-    hrError: "",
-    tbError: "",
-    usError: "",
+    gadgetName: "",
+    category: "",
+    manufacturer: "",
+    healthRating: "",
+    techBrand: "",
+    userRole: "",
   });
   const [gadgetName, setGadgetName] = useState("");
   const [category, setCategory] = useState("");
@@ -28,42 +28,49 @@ export default function Registration() {
   const [userRole, setUserRole] = useState("Engineer");
 
   function validation() {
-    const newError = {
-      gnError: "",
-      catError: "",
-      manuError: "",
-      hrError: "",
-      tbError: "",
-      usError: "",
+    let newError = {
+      gadgetName: "",
+      category: "",
+      manufacturer: "",
+      healthRating: "",
+      techBrand: "",
+      userRole: "",
     };
 
-    if (!gadgetName || gadgetName.length < 3) {
-      newError.gnError = "Input should be at least 3 characters";
+    if (gadgetName.length < 3) {
+      newError.gadgetName = "Input should be at least 3 characters";
     }
 
     if (!category) {
-      newError.catError = "Please input a category";
+      newError.category = "Please input a category";
     }
 
     if (!manufacturer) {
-      newError.manuError = "Please input a manufacturer";
+      newError.manufacturer = "Please input a manufacturer";
     }
 
     if (!healthRating || healthRating < 1 || healthRating > 100) {
-      newError.hrError = "Health rating should be between 1 and 100";
+      newError.healthRating = "Health rating should be between 1 and 100";
     }
 
     if (!techBrand) {
-      newError.tbError = "Please input a tech brand";
+      newError.techBrand = "Please input a tech brand";
     }
 
     if (!userRole) {
-      newError.usError = "Please select a user role";
+      newError.userRole = "Please select a user role";
     }
 
     setError(newError);
 
-    return !Object.values(newError).some((error) => error !== "");
+    return (
+      !newError.gadgetName &&
+      !newError.category &&
+      !newError.manufacturer &&
+      !newError.healthRating &&
+      !newError.techBrand &&
+      !newError.userRole
+    );
   }
 
   return (
@@ -78,49 +85,54 @@ export default function Registration() {
           label="Gadget Name"
           type="text"
           required
+          value={gadgetName}
           slotProps={{ htmlInput: { minLength: 3 } }}
           onChange={(e) => setGadgetName(e.target.value)}
-          error={!!error.gnError}
-          helperText={error.gnError}
+          error={!!error.gadgetName}
+          helperText={error.gadgetName}
         />
         <TextField
           variant="outlined"
           label="Category"
           type="text"
           required
+          value={category}
           placeholder="e.g. Smartphone, Laptop, Wearable, Audio"
           onChange={(e) => setCategory(e.target.value)}
-          error={!!error.catError}
-          helperText={error.catError}
+          error={!!error.category}
+          helperText={error.category}
         />
         <TextField
           variant="outlined"
           label="Manufacturer"
           type="text"
+          value={manufacturer}
           required
           onChange={(e) => setManufacturer(e.target.value)}
-          error={!!error.manuError}
-          helperText={error.manuError}
+          error={!!error.manufacturer}
+          helperText={error.manufacturer}
         />
         <TextField
           variant="outlined"
           label="Health Rating"
           type="number"
+          value={healthRating}
           required
           slotProps={{ htmlInput: { min: 1, max: 100 } }}
           onChange={(e) => setHealthRating(e.target.value)}
-          error={!!error.hrError}
-          helperText={error.hrError}
+          error={!!error.healthRating}
+          helperText={error.healthRating}
         />
 
         <TextField
           variant="outlined"
           label="Tech Brand Name"
           type="text"
+          value={techBrand}
           required
           onChange={(e) => setTechBrand(e.target.value)}
-          error={!!error.tbError}
-          helperText={error.tbError}
+          error={!!error.techBrand}
+          helperText={error.techBrand}
         />
         <RadioGroup
           required

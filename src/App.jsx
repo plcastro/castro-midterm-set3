@@ -4,10 +4,9 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Registration from "./pages/Registration";
 import ViewGadgetTable from "./pages/ViewGadgetTable";
 import { useState } from "react";
-import { data } from "./Data";
 
 function App() {
-  const [allGadgets, setAllGadgets] = useState(data);
+  const [allGadgets, setAllGadgets] = useState([]);
   return (
     <BrowserRouter>
       <Routes>

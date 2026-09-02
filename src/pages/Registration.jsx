@@ -153,6 +153,7 @@ export default function Registration({ allGadgets, setAllGadgets }) {
           label="Tech Brand Name"
           type="text"
           value={techBrand}
+          placeholder="e.g. Intel, AMD"
           required
           onChange={(e) => setTechBrand(e.target.value)}
           error={!!error.techBrand}

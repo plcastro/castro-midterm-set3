@@ -1,56 +1,45 @@
 import React, { useState, useEffect } from "react";
-import {
-  tableFeatures,
-  useTable,
-  rowPaginationFeature,
-  createPaginatedRowModel,
-  rowSelectionFeature,
-} from "@tanstack/react-table";
 import { Button, Typography, Card } from "@mui/material";
 import ProfileCard from "../components/ProfileCard";
+
 export default function ViewGadgetTable({ allGadgets }) {
-  console.log(allGadgets);
-  const features = tableFeatures({
-    rowPaginationFeature,
-    paginatedRowModel: createPaginatedRowModel(),
-    rowSelectionFeature,
-  });
-
-  const columns = [
-    { accessorKey: "gadgetName", header: "Gadget Name" },
-    { accessorKey: "category", header: "Category" },
-    { accessorKey: "manufacturer", header: "Manufacturer" },
-    { accessorKey: "healthRating", header: "Health Rating" },
-    { accessorKey: "techBrand", header: "Tech Brand" },
-    { accessorKey: "userRole", header: "User Role" },
-  ];
-  const table = useTable({
-    features,
-    columns,
-    data: allGadgets,
-    enableMultiRowSelection: false,
-    initialState: {
-      pagination: {
-        pageIndex: 0,
-        pageSize: 5,
-      },
-    },
-  });
-
   const [selectedGadget, setSelectedGadget] = useState(null);
+  const [filterBy, setFilterBy] = useState("none");
+  const [order, setOrder] = useState("asc");
+
+  const [page, setPage] = useState(0);
+  const pageSize = 5;
+
+  const filteredGadgets = [...allGadgets].sort((a, b) => {
+    if (filterBy === "none") return 0;
+
+    const valueA = a[filterBy];
+    const valueB = b[filterBy];
+
+    let comparison;
+
+    if (filterBy === "healthRating") {
+      comparison = Number(valueA) - Number(valueB);
+    } else {
+      comparison = String(valueA).localeCompare(String(valueB));
+    }
+
+    return order === "asc" ? comparison : -comparison;
+  });
+
+  const pageCount = Math.ceil(filteredGadgets.length / pageSize);
+
+  const paginatedGadgets = filteredGadgets.slice(
+    page * pageSize,
+    page * pageSize + pageSize,
+  );
 
   useEffect(() => {
-    const selectedRows = table.getSelectedRowModel().rows;
-
-    if (selectedRows.length > 0) {
-      setSelectedGadget(selectedRows[0].original);
-    } else {
-      setSelectedGadget(null);
-    }
-  }, [table.getSelectedRowModel().rows]);
+    setPage(0);
+  }, [filterBy, order]);
 
   return (
-    <div className="">
+    <div>
       <Typography
         variant="h4"
         align="center"
@@ -63,69 +52,96 @@ export default function ViewGadgetTable({ allGadgets }) {
         <div className="w-full overflow-x-auto">
           <table className="min-w-full rounded">
             <thead className="bg-teal-600 text-white">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <th key={header.id} className="border p-3 ">
-                      {header.column.columnDef.header}
-                    </th>
-                  ))}
-                </tr>
-              ))}
+              <tr>
+                <th className="border p-3">Gadget Name</th>
+                <th className="border p-3">Category</th>
+                <th className="border p-3">Manufacturer</th>
+                <th className="border p-3">Health Rating</th>
+                <th className="border p-3">Tech Brand</th>
+                <th className="border p-3">User Role</th>
+              </tr>
             </thead>
+
             <tbody>
-              {table.getRowModel().rows.map((row) => (
+              {paginatedGadgets.map((gadget, index) => (
                 <tr
-                  key={row.id}
-                  onClick={(e) => {
-                    row.getToggleSelectedHandler()(e);
-                    setSelectedRow(row.id);
+                  key={`${gadget.gadgetName}-${index}`}
+                  onClick={() => {
+                    setSelectedGadget(gadget);
                   }}
-                  className={row.getIsSelected() ? "bg-gray-300" : ""}
+                  className={
+                    selectedGadget === gadget
+                      ? "bg-gray-300 cursor-pointer"
+                      : "cursor-pointer"
+                  }
                 >
-                  {row.getAllCells().map((cell) => (
-                    <td key={cell.id} className="p-3 text-sm">
-                      {cell.getValue()}
-                    </td>
-                  ))}
+                  <td className="p-3 text-sm">{gadget.gadgetName}</td>
+                  <td className="p-3 text-sm">{gadget.category}</td>
+                  <td className="p-3 text-sm">{gadget.manufacturer}</td>
+                  <td className="p-3 text-sm">{gadget.healthRating}</td>
+                  <td className="p-3 text-sm">{gadget.techBrand}</td>
+                  <td className="p-3 text-sm">{gadget.userRole}</td>
                 </tr>
               ))}
             </tbody>
-          </table>{" "}
+          </table>
         </div>
       </Card>
 
-      <div className="flex sm:justify-end  justify-center gap-2 items-center mt-2">
-        <Button
-          variant="contained"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-          className={`border px-4 py-2 rounded ${
-            table.getCanPreviousPage()
-              ? "!bg-teal-600 !hover:bg-teal-700"
-              : "bg-gray-300 cursor-not-allowed"
-          }`}
-        >
-          Previous
-        </Button>
-        <span>
-          Page {table.state.pagination.pageIndex + 1} of {table.getPageCount()}
-        </span>
-        <Button
-          variant="contained"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-          className={`border px-4 py-2 rounded ${
-            table.getCanNextPage()
-              ? "!bg-teal-600 !hover:bg-teal-700"
-              : "bg-gray-300 cursor-not-allowed"
-          }`}
-        >
-          Next
-        </Button>
+      <div className="flex gap-2 sm:flex-nowrap flex-wrap sm:justify-between justify-center mt-2">
+        <div className="flex gap-2">
+          <select
+            value={filterBy}
+            onChange={(e) => setFilterBy(e.target.value)}
+            className="border rounded px-3 py-2"
+          >
+            <option value="none">Filter by</option>
+            <option value="gadgetName">Gadget Name</option>
+            <option value="category">Category</option>
+            <option value="manufacturer">Manufacturer</option>
+            <option value="healthRating">Health Rating</option>
+            <option value="techBrand">Tech Brand</option>
+            <option value="userRole">User Role</option>
+          </select>
+
+          <select
+            value={order}
+            onChange={(e) => setOrder(e.target.value)}
+            className="border rounded px-3 py-2"
+            disabled={filterBy === "none"}
+          >
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
+
+        <div className="flex gap-2 items-center">
+          <Button
+            variant="contained"
+            onClick={() => setPage((prev) => prev - 1)}
+            disabled={page === 0}
+            className="!bg-teal-600"
+          >
+            Previous
+          </Button>
+
+          <span>
+            Page {page + 1} of {pageCount}
+          </span>
+
+          <Button
+            variant="contained"
+            onClick={() => setPage((prev) => prev + 1)}
+            disabled={page >= pageCount - 1}
+            className="!bg-teal-600"
+          >
+            Next
+          </Button>
+        </div>
       </div>
+
       {selectedGadget && (
-        <div className=" mt-5">
+        <div className="mt-5">
           <ProfileCard gadgetDetails={selectedGadget} />
         </div>
       )}

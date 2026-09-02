@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Button, Typography, Card } from "@mui/material";
+import { Typography, Card } from "@mui/material";
 import "../App.css";
 function ProfileCard({ gadgetDetails }) {
   const {
@@ -11,25 +10,34 @@ function ProfileCard({ gadgetDetails }) {
     userRole,
   } = gadgetDetails;
   return (
-    <Card className="p-4">
-      <p>
-        <strong>Gadget Name:</strong> {gadgetName}
-      </p>
-      <p>
-        <strong>Category:</strong> {category}
-      </p>
-      <p>
-        <strong>Manufacturer:</strong> {manufacturer}
-      </p>
-      <p>
-        <strong>Health Rating:</strong> {healthRating}
-      </p>
-      <p>
-        <strong>Tech Brand Name:</strong> {techBrand}
-      </p>
-      <p>
-        <strong>User Role:</strong> {userRole}
-      </p>
+    <Card className="border-t-4 border-teal-600 p-4">
+      <p>Gadget Name:</p>
+      <Typography variant="h6" className="!font-black">
+        {gadgetName}
+      </Typography>
+      <p>Category:</p>{" "}
+      <Typography variant="h6" className="!font-black">
+        {category}
+      </Typography>
+      <p>Manufacturer:</p>{" "}
+      <Typography variant="h6" className="!font-black">
+        {" "}
+        {manufacturer}
+      </Typography>
+      <p>Health Rating:</p>{" "}
+      <Typography variant="h6" className="!font-black">
+        {healthRating}
+      </Typography>
+      <p>Tech Brand Name:</p>{" "}
+      <Typography variant="h6" className="!font-black">
+        {" "}
+        {techBrand}
+      </Typography>
+      <p>User Role:</p>{" "}
+      <Typography variant="h6" className="!font-black">
+        {" "}
+        {userRole}
+      </Typography>
     </Card>
   );
 }

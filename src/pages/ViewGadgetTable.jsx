@@ -50,7 +50,7 @@ export default function ViewGadgetTable({ allGadgets }) {
   }, [table.getSelectedRowModel().rows]);
 
   return (
-    <div className="w-full">
+    <div>
       <Typography
         variant="h4"
         align="center"
@@ -58,38 +58,41 @@ export default function ViewGadgetTable({ allGadgets }) {
       >
         Tech Gadget Inventory Hub
       </Typography>
-      <Card className="w-full mt-5 p-2">
-        <table>
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th key={header.id} className="border p-3 ">
-                    {header.column.columnDef.header}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr
-                key={row.id}
-                onClick={(e) => {
-                  row.getToggleSelectedHandler()(e);
-                  setSelectedRow(row.id);
-                }}
-                className={row.getIsSelected() ? "bg-gray-300" : ""}
-              >
-                {row.getAllCells().map((cell) => (
-                  <td key={cell.id} className="border p-3 text-sm">
-                    {cell.getValue()}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+
+      <Card className="w-full">
+        <div className="w-full overflow-x-auto">
+          <table className="min-w-4xl rounded">
+            <thead className="bg-teal-600 text-white">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th key={header.id} className="border p-3 ">
+                      {header.column.columnDef.header}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map((row) => (
+                <tr
+                  key={row.id}
+                  onClick={(e) => {
+                    row.getToggleSelectedHandler()(e);
+                    setSelectedRow(row.id);
+                  }}
+                  className={row.getIsSelected() ? "bg-gray-300" : ""}
+                >
+                  {row.getAllCells().map((cell) => (
+                    <td key={cell.id} className="p-3 text-sm">
+                      {cell.getValue()}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>{" "}
+        </div>
       </Card>
 
       <div className="flex justify-end gap-2 items-center mt-2">
@@ -97,7 +100,11 @@ export default function ViewGadgetTable({ allGadgets }) {
           variant="contained"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
-          className="border px-4 py-2 rounded"
+          className={`border px-4 py-2 rounded ${
+            table.getCanPreviousPage()
+              ? "!bg-teal-600 !hover:bg-teal-700"
+              : "bg-gray-300 cursor-not-allowed"
+          }`}
         >
           Previous
         </Button>
@@ -108,13 +115,17 @@ export default function ViewGadgetTable({ allGadgets }) {
           variant="contained"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
-          className="border px-4 py-2 rounded"
+          className={`border px-4 py-2 rounded ${
+            table.getCanNextPage()
+              ? "!bg-teal-600 !hover:bg-teal-700"
+              : "bg-gray-300 cursor-not-allowed"
+          }`}
         >
           Next
         </Button>
       </div>
       {selectedGadget && (
-        <div className="w-full mt-5">
+        <div className=" mt-5">
           <ProfileCard gadgetDetails={selectedGadget} />
         </div>
       )}
